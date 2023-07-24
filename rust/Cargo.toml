@@ -3,7 +3,6 @@ name = "wasi-crypto-guest"
 version = "0.1.4"
 authors = ["Frank Denis <github@pureftpd.org>"]
 edition = "2018"
-publish = false
 description = "Example WASI-Crypto guest bindings for Rust"
 license-file = "LICENSE"
 repository = "https://github.com/wasm-crypto/wasi-crypto-bindings"

@@ -362,9 +362,6 @@ impl fmt::Display for CryptoErrno {
     }
 }
 
-#[cfg(feature = "std")]
-extern crate std;
-#[cfg(feature = "std")]
 impl std::error::Error for CryptoErrno {}
 
 #[repr(transparent)]

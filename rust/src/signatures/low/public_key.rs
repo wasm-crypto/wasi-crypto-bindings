@@ -71,7 +71,7 @@ impl SignaturePublicKey {
         let handle = unsafe { raw::signature_verification_state_open(self.0.handle) }?;
         Ok(SignatureVerificationState {
             handle,
-            alg: self.0.alg.clone(),
+            alg: self.0.alg,
         })
     }
 

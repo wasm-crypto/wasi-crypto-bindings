@@ -8,4 +8,4 @@ license-file = "LICENSE"
 repository = "https://github.com/wasm-crypto/wasi-crypto-bindings"
 
 [dependencies]
-num_enum = "0.6.1"
+num_enum = "0.7.3"

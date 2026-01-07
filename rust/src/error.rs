@@ -1,3 +1,4 @@
+use core::convert::TryFrom;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 use crate::raw;

@@ -84,7 +84,7 @@ impl SymmetricKey {
 
 impl Drop for SymmetricKey {
     fn drop(&mut self) {
-        unsafe { raw::symmetric_key_close(self.handle) }.unwrap()
+        let _ = unsafe { raw::symmetric_key_close(self.handle) };
     }
 }
 
@@ -103,8 +103,11 @@ impl Tag {
     }
 
     pub fn into_bytes(mut self) -> Vec<u8> {
-        let mut bytes = vec![0u8; unsafe { raw::symmetric_tag_len(self.handle) }.unwrap()];
-        unsafe { raw::symmetric_tag_pull(self.handle, bytes.as_mut_ptr(), bytes.len()) }.unwrap();
+        let len = unsafe { raw::symmetric_tag_len(self.handle) }
+            .expect("symmetric_tag_len should not fail for valid tag handle");
+        let mut bytes = vec![0u8; len];
+        unsafe { raw::symmetric_tag_pull(self.handle, bytes.as_mut_ptr(), bytes.len()) }
+            .expect("symmetric_tag_pull should not fail for valid tag handle and buffer");
         self.closed = true;
         bytes
     }
@@ -113,7 +116,7 @@ impl Tag {
 impl Drop for Tag {
     fn drop(&mut self) {
         if !self.closed {
-            unsafe { raw::symmetric_tag_close(self.handle).unwrap() }
+            let _ = unsafe { raw::symmetric_tag_close(self.handle) };
         }
     }
 }

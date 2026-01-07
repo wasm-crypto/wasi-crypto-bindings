@@ -12,7 +12,7 @@ pub(crate) struct KeyPair {
 
 impl Drop for KeyPair {
     fn drop(&mut self) {
-        unsafe { raw::keypair_close(self.handle) }.unwrap()
+        let _ = unsafe { raw::keypair_close(self.handle) };
     }
 }
 

@@ -164,6 +164,6 @@ impl SymmetricState {
 
 impl Drop for SymmetricState {
     fn drop(&mut self) {
-        unsafe { raw::symmetric_state_close(self.handle) }.unwrap()
+        let _ = unsafe { raw::symmetric_state_close(self.handle) };
     }
 }

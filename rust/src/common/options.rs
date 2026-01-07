@@ -11,7 +11,8 @@ pub(crate) struct Options<T: algorithm_type::AlgorithmType> {
 
 impl<T: algorithm_type::AlgorithmType> Options<T> {
     pub fn new(alg_type: raw::AlgorithmType) -> Self {
-        let handle = unsafe { raw::options_open(alg_type) }.unwrap();
+        let handle = unsafe { raw::options_open(alg_type) }
+            .expect("options_open should not fail for valid algorithm types");
         Options {
             handle,
             _t: PhantomData,
@@ -21,7 +22,7 @@ impl<T: algorithm_type::AlgorithmType> Options<T> {
 
 impl<T: algorithm_type::AlgorithmType> Drop for Options<T> {
     fn drop(&mut self) {
-        unsafe { raw::options_close(self.handle) }.unwrap()
+        let _ = unsafe { raw::options_close(self.handle) };
     }
 }
 

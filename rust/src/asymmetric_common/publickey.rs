@@ -10,7 +10,7 @@ pub(crate) struct PublicKey {
 
 impl Drop for PublicKey {
     fn drop(&mut self) {
-        unsafe { raw::publickey_close(self.handle) }.unwrap()
+        let _ = unsafe { raw::publickey_close(self.handle) };
     }
 }
 

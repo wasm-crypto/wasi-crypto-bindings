@@ -10,7 +10,7 @@ pub struct SignatureState {
 
 impl Drop for SignatureState {
     fn drop(&mut self) {
-        unsafe { raw::signature_state_close(self.handle) }.unwrap()
+        let _ = unsafe { raw::signature_state_close(self.handle) };
     }
 }
 
@@ -38,7 +38,7 @@ pub struct SignatureVerificationState {
 
 impl Drop for SignatureVerificationState {
     fn drop(&mut self) {
-        unsafe { raw::signature_verification_state_close(self.handle) }.unwrap()
+        let _ = unsafe { raw::signature_verification_state_close(self.handle) };
     }
 }
 

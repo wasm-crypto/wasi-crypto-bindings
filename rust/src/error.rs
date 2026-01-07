@@ -1,5 +1,3 @@
-use std::convert::TryFrom;
-
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 use crate::raw;
@@ -41,7 +39,7 @@ pub enum Error {
 
 impl From<raw::CryptoErrno> for Error {
     fn from(e: raw::CryptoErrno) -> Error {
-        Error::from_raw_error(e.raw()).unwrap()
+        Error::from_raw_error(e.raw()).expect("CryptoErrno should not be success (0)")
     }
 }
 

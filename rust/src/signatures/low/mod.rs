@@ -17,7 +17,7 @@ pub struct Signature {
 
 impl Drop for Signature {
     fn drop(&mut self) {
-        unsafe { raw::signature_close(self.handle) }.unwrap()
+        let _ = unsafe { raw::signature_close(self.handle) };
     }
 }
 

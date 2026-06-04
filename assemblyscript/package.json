@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "asbuild:untouched": "asc assembly/index.ts -b build/untouched.wasm -t build/untouched.wat --sourceMap --debug --config ./node_modules/@assemblyscript/wasi-shim/asconfig.json",
-    "asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm -t build/optimized.wat --sourceMap --optimize --config ./node_modules/@assemblyscript/wasi-shim/asconfig.json",
+    "asbuild:untouched": "asc assembly/index.ts -o build/untouched.wasm -t build/untouched.wat --sourceMap --debug --config ./node_modules/@assemblyscript/wasi-shim/asconfig.json",
+    "asbuild:optimized": "asc assembly/index.ts -o build/optimized.wasm -t build/optimized.wat --sourceMap --optimize --config ./node_modules/@assemblyscript/wasi-shim/asconfig.json",
     "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
   },
   "dependencies": {

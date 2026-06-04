@@ -149,7 +149,7 @@ export class Aead {
             return null;
         }
         let out = new ArrayBuffer(ciphertext.byteLength - (maxTagLen as i32));
-        if ((crypto.symmetricStateEncrypt(this.state, changetype<ptr<u8>>(out), out.byteLength, changetype<ptr<u8>>(ciphertext), ciphertext.byteLength, buf))) {
+        if ((error.last = crypto.symmetricStateDecrypt(this.state, changetype<ptr<u8>>(out), out.byteLength, changetype<ptr<u8>>(ciphertext), ciphertext.byteLength, buf))) {
             return null;
         }
         return out.slice(0, load<usize>(buf) as i32);
@@ -157,7 +157,7 @@ export class Aead {
 
     encryptDetached(msg: ArrayBuffer): CiphertextAndTag | null {
         let ciphertext = new ArrayBuffer(msg.byteLength);
-        if ((crypto.symmetricStateEncryptDetached(this.state, changetype<ptr<u8>>(ciphertext), ciphertext.byteLength, changetype<ptr<u8>>(msg), msg.byteLength, buf))) {
+        if ((error.last = crypto.symmetricStateEncryptDetached(this.state, changetype<ptr<u8>>(ciphertext), ciphertext.byteLength, changetype<ptr<u8>>(msg), msg.byteLength, buf))) {
             return null;
         }
         let tag = load<crypto.SymmetricTag>(buf);
@@ -169,7 +169,7 @@ export class Aead {
 
     decryptDetached(ciphertextAndTag: CiphertextAndTag): ArrayBuffer | null {
         let msg = new ArrayBuffer(ciphertextAndTag.ciphertext.byteLength);
-        if ((crypto.symmetricStateDecryptDetached(this.state, changetype<ptr<u8>>(msg), msg.byteLength, changetype<ptr<u8>>(ciphertextAndTag.ciphertext), ciphertextAndTag.ciphertext.byteLength, changetype<ptr<u8>>(ciphertextAndTag.rawTag), ciphertextAndTag.rawTag.byteLength, buf))) {
+        if ((error.last = crypto.symmetricStateDecryptDetached(this.state, changetype<ptr<u8>>(msg), msg.byteLength, changetype<ptr<u8>>(ciphertextAndTag.ciphertext), ciphertextAndTag.ciphertext.byteLength, changetype<ptr<u8>>(ciphertextAndTag.rawTag), ciphertextAndTag.rawTag.byteLength, buf))) {
             return null;
         }
         return msg.slice(0, load<usize>(buf) as i32);

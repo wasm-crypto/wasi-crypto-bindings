@@ -1,5 +1,5 @@
 use super::public_key::*;
-use super::{Signature, SignatureState};
+use super::{Signature, SignatureOptions, SignatureState};
 use crate::asymmetric_common::*;
 use crate::error::*;
 use crate::raw;
@@ -12,6 +12,15 @@ impl SignatureKeyPair {
         Ok(SignatureKeyPair(KeyPair::generate(
             raw::ALGORITHM_TYPE_SIGNATURES,
             alg,
+        )?))
+    }
+
+    pub fn generate_with_options(
+        alg: &'static str,
+        options: &SignatureOptions,
+    ) -> Result<Self, Error> {
+        Ok(SignatureKeyPair(KeyPair::generate_with_options(
+            alg, options,
         )?))
     }
 

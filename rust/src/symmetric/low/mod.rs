@@ -5,30 +5,7 @@ use crate::common::*;
 use crate::error::*;
 use crate::raw;
 
-#[derive(Debug)]
-pub struct SymmetricOptions(Options<algorithm_type::Symmetric>);
-
-impl SymmetricOptions {
-    pub fn new() -> Self {
-        SymmetricOptions(Options::new(raw::ALGORITHM_TYPE_SYMMETRIC))
-    }
-
-    pub fn set(&mut self, name: &'static str, value: impl AsRef<[u8]>) -> Result<(), Error> {
-        let value = value.as_ref();
-        unsafe { raw::options_set(self.0.handle, name, value.as_ptr(), value.len()) }
-            .map_err(|e| e.into())
-    }
-
-    pub fn set_u64(&mut self, name: &'static str, value: u64) -> Result<(), Error> {
-        unsafe { raw::options_set_u64(self.0.handle, name, value) }.map_err(|e| e.into())
-    }
-}
-
-impl Default for SymmetricOptions {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+pub type SymmetricOptions = Options<algorithm_type::Symmetric>;
 
 struct OptSymmetricKey;
 
@@ -62,7 +39,7 @@ impl SymmetricKey {
         options: Option<&SymmetricOptions>,
     ) -> Result<SymmetricKey, Error> {
         let opt_options = if let Some(options) = options {
-            OptOptions::some(&options.0)
+            OptOptions::some(options)
         } else {
             OptOptions::none()
         };

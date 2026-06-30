@@ -9,6 +9,8 @@ use crate::common::*;
 use crate::error::*;
 use crate::raw;
 
+pub type SignatureOptions = Options<algorithm_type::Signatures>;
+
 #[derive(Debug)]
 pub struct Signature {
     pub(crate) handle: raw::Signature,

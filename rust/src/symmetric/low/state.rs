@@ -23,7 +23,7 @@ impl SymmetricState {
             OptSymmetricKey::none()
         };
         let opt_options = if let Some(options) = options {
-            OptOptions::some(&options.0)
+            OptOptions::some(options)
         } else {
             OptOptions::none()
         };

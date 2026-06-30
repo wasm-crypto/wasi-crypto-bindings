@@ -1,5 +1,6 @@
 use super::public_key::*;
 use super::secret_key::*;
+use super::KxOptions;
 use crate::asymmetric_common::*;
 use crate::error::*;
 use crate::raw;
@@ -13,6 +14,10 @@ impl KxKeyPair {
             raw::ALGORITHM_TYPE_KEY_EXCHANGE,
             alg,
         )?))
+    }
+
+    pub fn generate_with_options(alg: &'static str, options: &KxOptions) -> Result<Self, Error> {
+        Ok(KxKeyPair(KeyPair::generate_with_options(alg, options)?))
     }
 
     pub fn publickey(&self) -> Result<KxPublicKey, Error> {

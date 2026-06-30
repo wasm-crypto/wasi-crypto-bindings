@@ -6,6 +6,10 @@ pub use key_pair::*;
 pub use public_key::*;
 pub use secret_key::*;
 
+use crate::common::{algorithm_type, Options};
+
+pub type KxOptions = Options<algorithm_type::KeyExchange>;
+
 #[derive(Debug)]
 pub struct EncapsulatedSecret {
     pub secret: Vec<u8>,

@@ -22,6 +22,14 @@ impl KeyPair {
         Ok(KeyPair { handle, alg })
     }
 
+    pub fn generate_with_options<T: algorithm_type::AlgorithmType>(
+        alg: &'static str,
+        options: &Options<T>,
+    ) -> Result<Self, Error> {
+        let handle = unsafe { raw::keypair_generate(T::RAW, alg, OptOptions::some(options)) }?;
+        Ok(KeyPair { handle, alg })
+    }
+
     pub fn publickey(&self) -> Result<PublicKey, Error> {
         let handle = unsafe { raw::keypair_publickey(self.handle)? };
         Ok(PublicKey {

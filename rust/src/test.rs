@@ -111,14 +111,38 @@ mod test {
 
     #[test]
     fn test_kem() -> Result<(), WasiCryptoError> {
-        let kp = KxKeyPair::generate("Kyber-1024")?;
-        let pk = kp.publickey()?;
-        let sk = kp.secretkey()?;
+        for alg in ["ML-KEM-512", "ML-KEM-768", "ML-KEM-1024", "X-WING"] {
+            let kp = KxKeyPair::generate(alg)?;
+            let pk = kp.publickey()?;
+            let sk = kp.secretkey()?;
 
-        let kem_output = pk.encapsulate()?;
-        let decapsulated_secret = sk.decapsulate(kem_output.encapsulated_secret.as_slice())?;
+            let kem_output = pk.encapsulate()?;
+            let decapsulated_secret = sk.decapsulate(kem_output.encapsulated_secret.as_slice())?;
 
-        assert_eq!(kem_output.secret, decapsulated_secret);
+            assert_eq!(kem_output.secret, decapsulated_secret);
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn test_keygen_options() -> Result<(), WasiCryptoError> {
+        // The algorithm_type markers are usable as public type parameters of Options<T>.
+        let _sig: Options<algorithm_type::Signatures> = Options::new();
+        let _kx: Options<algorithm_type::KeyExchange> = Options::new();
+
+        let opts = SignatureOptions::new();
+        let kp = SignatureKeyPair::generate_with_options("Ed25519", &opts)?;
+        let sig = kp.sign(b"message")?;
+        kp.publickey()?.signature_verify(b"message", &sig)?;
+
+        let opts = KxOptions::new();
+        let a = KxKeyPair::generate_with_options("X25519", &opts)?;
+        let b = KxKeyPair::generate_with_options("X25519", &opts)?;
+        assert_eq!(
+            a.publickey()?.dh(&b.secretkey()?)?,
+            b.publickey()?.dh(&a.secretkey()?)?
+        );
+
         Ok(())
     }
 }

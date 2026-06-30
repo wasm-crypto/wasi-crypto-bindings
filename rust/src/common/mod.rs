@@ -1,10 +1,15 @@
 mod array_output;
 mod options;
 pub(crate) use array_output::*;
-pub(crate) use options::*;
+pub use options::Options;
+pub(crate) use options::OptOptions;
 
 pub mod algorithm_type {
-    pub trait AlgorithmType {}
+    use crate::raw;
+
+    pub trait AlgorithmType {
+        const RAW: raw::AlgorithmType;
+    }
 
     #[derive(Debug)]
     pub struct Symmetric;
@@ -13,7 +18,13 @@ pub mod algorithm_type {
     #[derive(Debug)]
     pub struct KeyExchange;
 
-    impl AlgorithmType for Symmetric {}
-    impl AlgorithmType for Signatures {}
-    impl AlgorithmType for KeyExchange {}
+    impl AlgorithmType for Symmetric {
+        const RAW: raw::AlgorithmType = raw::ALGORITHM_TYPE_SYMMETRIC;
+    }
+    impl AlgorithmType for Signatures {
+        const RAW: raw::AlgorithmType = raw::ALGORITHM_TYPE_SIGNATURES;
+    }
+    impl AlgorithmType for KeyExchange {
+        const RAW: raw::AlgorithmType = raw::ALGORITHM_TYPE_KEY_EXCHANGE;
+    }
 }

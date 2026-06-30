@@ -6,6 +6,10 @@ edition = "2018"
 description = "Example WASI-Crypto guest bindings for Rust"
 license-file = "LICENSE"
 repository = "https://github.com/wasm-crypto/wasi-crypto-bindings"
+include = [
+    "src/**/*.rs",
+    "LICENSE",
+]
 
 [dependencies]
 num_enum = "0.7.6"

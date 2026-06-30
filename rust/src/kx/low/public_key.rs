@@ -69,6 +69,10 @@ impl KxPublicKey {
         self.0.local()
     }
 
+    pub fn verify(&self) -> Result<(), Error> {
+        unsafe { raw::publickey_verify(self.0.handle) }.map_err(|e| e.into())
+    }
+
     pub fn dh(&self, secret_key: &KxSecretKey) -> Result<Vec<u8>, Error> {
         if self.0.alg != secret_key.0.alg {
             return Err(Error::IncompatibleKeys);

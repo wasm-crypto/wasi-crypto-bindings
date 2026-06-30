@@ -155,10 +155,31 @@ impl SymmetricState {
     }
 
     pub fn verify(&mut self, raw_tag: impl AsRef<[u8]>) -> Result<(), Error> {
-        let raw_tag = raw_tag.as_ref();
         let tag_handle = unsafe { raw::symmetric_state_squeeze_tag(self.handle) }?;
-        unsafe { raw::symmetric_tag_verify(tag_handle, raw_tag.as_ptr(), raw_tag.len()) }
-            .map_err(|e| e.into())
+        Tag::new(tag_handle).verify(raw_tag)
+    }
+
+    pub fn options_get(&self, name: &'static str) -> Result<Vec<u8>, Error> {
+        let mut value = vec![0u8; 64];
+        loop {
+            match unsafe {
+                raw::symmetric_state_options_get(self.handle, name, value.as_mut_ptr(), value.len())
+            } {
+                Ok(len) => {
+                    value.truncate(len);
+                    return Ok(value);
+                }
+                Err(e) if e == raw::CRYPTO_ERRNO_OVERFLOW => {
+                    let len = value.len().checked_mul(2).ok_or(Error::Overflow)?;
+                    value.resize(len, 0);
+                }
+                Err(e) => return Err(e.into()),
+            }
+        }
+    }
+
+    pub fn options_get_u64(&self, name: &'static str) -> Result<u64, Error> {
+        unsafe { raw::symmetric_state_options_get_u64(self.handle, name) }.map_err(|e| e.into())
     }
 }
 

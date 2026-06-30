@@ -111,6 +111,12 @@ impl Tag {
         self.closed = true;
         bytes
     }
+
+    pub fn verify(self, expected: impl AsRef<[u8]>) -> Result<(), Error> {
+        let expected = expected.as_ref();
+        unsafe { raw::symmetric_tag_verify(self.handle, expected.as_ptr(), expected.len()) }
+            .map_err(|e| e.into())
+    }
 }
 
 impl Drop for Tag {
